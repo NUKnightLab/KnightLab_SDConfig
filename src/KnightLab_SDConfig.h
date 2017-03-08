@@ -5,6 +5,6 @@
 #include <SD.h>
 #include "nlist.h"
 
-void readSDConfig(char *configFileName);
+int readSDConfig(char *configFileName);
 
 #endif

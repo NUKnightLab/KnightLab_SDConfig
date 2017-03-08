@@ -29,11 +29,11 @@
 
 static File _configFile;
 
-void _readSDConfig(char *configFileName) {
+int _readSDConfig(char *configFileName) {
     Serial.print("Reading SD card ..");
     if (!SD.begin(CHIP_SELECT_PIN)) {
         Serial.println(" .. SD card init failed!");
-        return;
+        return 1;
     }
     Serial.println(" .. done");
     Serial.print("Reading Config File: "); Serial.print(configFileName);
@@ -64,14 +64,16 @@ void _readSDConfig(char *configFileName) {
         }
         Serial.println(".. done");
         _configFile.close();
+        return 0;
     } else {
         Serial.print("Error opening "); Serial.println(configFileName);
+        return 1;
     }
-    digitalWrite(RFM95_CS, LOW);
 }
 
-void readSDConfig(char *configFileName) {
+int readSDConfig(char *configFileName) {
     digitalWrite(RFM95_CS, HIGH);
-    _readSDConfig(configFileName);
+    int status = _readSDConfig(configFileName);
     digitalWrite(RFM95_CS, LOW);
+    return status;
 }
