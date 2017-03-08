@@ -25,6 +25,7 @@
 #define CHIP_SELECT_PIN 10 // Feather 32u4 and M0
 #define RFM95_CS 8 // Must be pulled HIGH on M0 LoRa Feather
 #define VERBOSE true
+#define MAX_LEN 30
 
 static File _configFile;
 
@@ -39,13 +40,12 @@ void _readSDConfig(char *configFileName) {
     Serial.println("..");
     _configFile = SD.open(configFileName);
     if (_configFile) {
-        uint8_t MAX = 30;
-        char key[MAX], val[MAX];
+        char key[MAX_LEN], val[MAX_LEN];
         char* keyPtr;
         char* valPtr;
         while (_configFile.available()) {
-            memset(key, 0, MAX);
-            memset(val, 0, MAX);
+            memset(key, 0, MAX_LEN);
+            memset(val, 0, MAX_LEN);
             keyPtr = key;
             valPtr = val;
             for (char c=_configFile.read(); c != ' '; c=_configFile.read()) {

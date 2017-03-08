@@ -3,8 +3,11 @@
 A library for reading a simple config file from the SD card of an Adalogger
 
 Config format is single-space-delimited key-value pairs. One per line. There is
-no format or integrity checking. Probably potential for buffer overflows if not
-careful. Use at your own risk.
+no format or integrity checking.
+
+Max length for keys or values is 30 characters
+
+Note: pulls pin 8 HIGH during read, specifically for use with Feather M0 LoRa
 
 ## To use:
   - include `<KnightLab_SDConfig.h>`
