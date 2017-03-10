@@ -26,6 +26,7 @@
 #define RFM95_CS 8 // Must be pulled HIGH on M0 LoRa Feather
 #define VERBOSE true
 #define MAX_LEN 30
+static SdFat SD;
 
 static File _configFile;
 
