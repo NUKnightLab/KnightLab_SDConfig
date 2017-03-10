@@ -14,6 +14,8 @@ Note: pulls pin 8 HIGH during read, specifically for use with Feather M0 LoRa
   - `readSDConfig(FILENAME)` to read the config file
   - `getConfig(KEY)` to get the config
 
+Requires SdFat which you can get here: https://github.com/greiman/SdFat
+
 This library has been extracted from the Knight Lab Sensor Grid project. Design is
 pretty specific to the needs of that project, but has no Sensor Grid dependencies.
 If you find it useful, let us know.
