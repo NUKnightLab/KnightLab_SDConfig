@@ -10,6 +10,7 @@ struct nlist {
 };
 
 char *getConfig(char *s);
+char *getConfig(char *key, char *defaultValue);
 struct nlist *addConfig(char *key, char *value);
 
 #endif

@@ -19,7 +19,19 @@ static struct nlist *lookup(char *s) {
 }
 
 char *getConfig(char *key) {
-    return lookup(key)->value;
+    if (lookup(key) == NULL) {
+        return '\0';
+    } else {
+        return lookup(key)->value;
+    }
+}
+
+char *getConfig(char *key, char *defaultValue) {
+    if (lookup(key) == NULL) {
+        return defaultValue;
+    } else {
+        return lookup(key)->value;
+    }
 }
 
 static char *strdup(char *s) /* make a duplicate of s */ {
