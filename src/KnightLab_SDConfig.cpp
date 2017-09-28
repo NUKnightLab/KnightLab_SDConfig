@@ -55,7 +55,7 @@ int _readSDConfig(char *configFileName) {
             }
             if (VERBOSE)
                 Serial.print(key);
-            for (char c=_configFile.read(); c != '\n' && c != EOF; c=_configFile.read()) {
+            for (char c=_configFile.read(); (c != '\n') && (c!= '\r)' && (c != EOF); c=_configFile.read()) {
                 *valPtr = c;
                 valPtr++;
             }
