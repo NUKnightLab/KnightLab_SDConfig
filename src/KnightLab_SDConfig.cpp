@@ -49,7 +49,7 @@ int _readSDConfig(char *configFileName) {
             memset(val, 0, MAX_LEN);
             keyPtr = key;
             valPtr = val;
-            for (char c=_configFile.read(); c != ' '; c=_configFile.read()) {
+            for (char c=_configFile.read(); c != ' ' && c != '\n'; c=_configFile.read()) {
                 *keyPtr = c;
                 keyPtr++;
             }
