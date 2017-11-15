@@ -49,13 +49,13 @@ int _readSDConfig(char *configFileName) {
             memset(val, 0, MAX_LEN);
             keyPtr = key;
             valPtr = val;
-            for (char c=_configFile.read(); c != ' '; c=_configFile.read()) {
+            for (char c=_configFile.read(); c != ' ' && c != '\n'; c=_configFile.read()) {
                 *keyPtr = c;
                 keyPtr++;
             }
             if (VERBOSE)
                 Serial.print(key);
-            for (char c=_configFile.read(); c != '\n' && c!= '\r' && c != EOF; c=_configFile.read()) {
+            for (char c=_configFile.read(); c != '\n' && c != EOF; c=_configFile.read()) {
                 *valPtr = c;
                 valPtr++;
             }
