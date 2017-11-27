@@ -30,6 +30,40 @@ static SdFat SD;
 
 static File _configFile;
 
+char* LStrip(char* val) {
+  int length = strlen(val);
+  char* subStr = val;
+  for (int i=0; i<length; i++ ) {
+    if (val[i] != ' ') {
+      *subStr = val[i];
+      subStr++;
+    }
+  }
+  subStr++;
+  subStr = '\0'; //add null terminator
+  return subStr;
+}
+
+char *RStrip(char* val) {
+  int length = strlen(val);
+  char* subStr;
+  for (int i=length; i>0; i--) {
+    if (val[i] != ' ') {
+      *subStr = val[i];
+      subStr++;
+    }
+  }
+  //reverse string
+  int subLength = strlen(subStr);
+  for (int i=0; i<subLength/2; i++) {
+    subStr[i] = subStr[i]^subStr[subLength-i-1];
+    subStr[length-i-1] = subStr[i]^subStr[subLength-i-1];
+    subStr[i] = subStr[subLength-i-1]^subStr[i];
+  }
+  *(subStr + subLength) = '\0';
+  return subStr;
+}
+
 int _readSDConfig(char *configFileName) {
     Serial.print("Reading SD card ..");
     if (!SD.begin(CHIP_SELECT_PIN)) {
@@ -52,7 +86,7 @@ int _readSDConfig(char *configFileName) {
             memset(val, 0, MAX_LEN);
             keyPtr = key;
             valPtr = val;
-            for (char c=_configFile.read(); c != ' ' && c != '\n'; c=_configFile.read()) {
+            for (char c=_configFile.read(); c != ' ' && c != '\n' && c != '\r'; c=_configFile.read()) {
                 *keyPtr = c;
                 keyPtr++;
                 //for debugging
@@ -89,6 +123,12 @@ int _readSDConfig(char *configFileName) {
             }
 
             if (VERBOSE)
+                valPtr = LStrip(val);
+                Serial.print("This is LStrip ");
+                Serial.print(valPtr);
+                valPtr = RStrip(val);
+                Serial.print("This is RStrip ");
+                Serial.print(valPtr);
                 Serial.print(" "); Serial.println(val);
             addConfig(key, val);
         }
