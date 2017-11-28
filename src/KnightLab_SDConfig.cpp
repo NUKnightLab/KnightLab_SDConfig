@@ -30,38 +30,42 @@ static SdFat SD;
 
 static File _configFile;
 
-char* LStrip(char* val) {
+char* LStrip(char *val) {
   int length = strlen(val);
   char* subStr = val;
   for (int i=0; i<length; i++ ) {
+    //for debugging
+    /*
+    Serial.print("From LStrip: ");
+    Serial.print(val[i]);
+    Serial.println(); */
     if (val[i] != ' ') {
       *subStr = val[i];
       subStr++;
     }
   }
-  subStr++;
-  subStr = '\0'; //add null terminator
-  return subStr;
+  //for debugging
+  /*
+  Serial.println("subStr: ");
+  Serial.print(val);
+  Serial.println(); */
+  return val;
 }
 
-char *RStrip(char* val) {
+char* RStrip(char *val) {
   int length = strlen(val);
   char* subStr;
   for (int i=length; i>0; i--) {
+    /*
+    Serial.println("From RStrip: ");
+    Serial.print(val[i]);
+    Serial.println(); */
     if (val[i] != ' ') {
       *subStr = val[i];
       subStr++;
     }
   }
-  //reverse string
-  int subLength = strlen(subStr);
-  for (int i=0; i<subLength/2; i++) {
-    subStr[i] = subStr[i]^subStr[subLength-i-1];
-    subStr[length-i-1] = subStr[i]^subStr[subLength-i-1];
-    subStr[i] = subStr[subLength-i-1]^subStr[i];
-  }
-  *(subStr + subLength) = '\0';
-  return subStr;
+  return val;
 }
 
 int _readSDConfig(char *configFileName) {
@@ -121,14 +125,10 @@ int _readSDConfig(char *configFileName) {
               int ASCII = valC - '0';
               Serial.print(ASCII); */
             }
-
             if (VERBOSE)
                 valPtr = LStrip(val);
-                Serial.print("This is LStrip ");
-                Serial.print(valPtr);
                 valPtr = RStrip(val);
-                Serial.print("This is RStrip ");
-                Serial.print(valPtr);
+
                 Serial.print(" "); Serial.println(val);
             addConfig(key, val);
         }
