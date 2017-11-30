@@ -8,4 +8,5 @@
 char* LStrip(char *val);
 char* RStrip(char *val);
 int readSDConfig(char *configFileName);
+char* stripExtraSpaces(char* val); 
 #endif
