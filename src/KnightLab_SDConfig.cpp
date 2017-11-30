@@ -30,41 +30,12 @@ static SdFat SD;
 
 static File _configFile;
 
-char* LStrip(char *val) {
-  int length = strlen(val);
-  char* subStr = val;
-  for (int i=0; i<length; i++ ) {
-    //for debugging
-    /*
-    Serial.print("From LStrip: ");
-    Serial.print(val[i]);
-    Serial.println(); */
-    if (val[i] != ' ') {
-      *subStr = val[i];
-      subStr++;
-    }
-  }
-  //for debugging
-  /*
-  Serial.println("subStr: ");
-  Serial.print(val);
-  Serial.println(); */
-  return val;
-}
-
-char* RStrip(char *val) {
-  int length = strlen(val);
-  char* subStr;
-  for (int i=length; i>0; i--) {
-    /*
-    Serial.println("From RStrip: ");
-    Serial.print(val[i]);
-    Serial.println(); */
-    if (val[i] != ' ') {
-      *subStr = val[i];
-      subStr++;
-    }
-  }
+char* stripExtraSpaces(char* val) {
+  int i,j;
+  for(i=j=0; val[i]; ++i)
+    if(!isspace(val[i]) || (i>0 && !isspace(val[i-1])))
+      val[j++] = val[i];
+  val[j] = '\0';
   return val;
 }
 
@@ -121,14 +92,9 @@ int _readSDConfig(char *configFileName) {
               *valPtr = valC;
               valPtr++;
               count++;
-              /*
-              int ASCII = valC - '0';
-              Serial.print(ASCII); */
             }
             if (VERBOSE)
-                valPtr = LStrip(val);
-                valPtr = RStrip(val);
-
+                valPtr = stripExtraSpaces(val);
                 Serial.print(" "); Serial.println(val);
             addConfig(key, val);
         }
