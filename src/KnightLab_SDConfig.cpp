@@ -93,8 +93,8 @@ int _readSDConfig(char *configFileName) {
               valPtr++;
               count++;
             }
+            valPtr = stripExtraSpaces(val);
             if (VERBOSE)
-                valPtr = stripExtraSpaces(val);
                 Serial.print(" "); Serial.println(val);
             addConfig(key, val);
         }
