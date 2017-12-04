@@ -6,5 +6,5 @@
 #include "nlist.h"
 
 int readSDConfig(char *configFileName);
-
+char* stripExtraSpaces(char* val);
 #endif

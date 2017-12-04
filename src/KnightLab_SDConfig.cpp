@@ -25,10 +25,19 @@
 #define CHIP_SELECT_PIN 10 // Feather 32u4 and M0
 #define RFM95_CS 8 // Must be pulled HIGH on M0 LoRa Feather
 #define VERBOSE true
-#define MAX_LEN 30
+#define MAX_LEN 100
 static SdFat SD;
 
 static File _configFile;
+
+char* stripExtraSpaces(char* val) {
+  int i,j;
+  for(i=j=0; val[i]; ++i)
+    if(!isspace(val[i]) || (i>0 && !isspace(val[i-1])))
+      val[j++] = val[i];
+  val[j] = '\0';
+  return val;
+}
 
 int _readSDConfig(char *configFileName) {
     Serial.print("Reading SD card ..");
@@ -44,21 +53,47 @@ int _readSDConfig(char *configFileName) {
         char key[MAX_LEN], val[MAX_LEN];
         char* keyPtr;
         char* valPtr;
+        int size = _configFile.size();
+        Serial.print("Config file size: ");
+        Serial.println(size);
         while (_configFile.available()) {
             memset(key, 0, MAX_LEN);
             memset(val, 0, MAX_LEN);
             keyPtr = key;
             valPtr = val;
-            for (char c=_configFile.read(); c != ' '; c=_configFile.read()) {
+            for (char c=_configFile.read(); c != ' ' && c != '\n' && c != '\r'; c=_configFile.read()) {
                 *keyPtr = c;
                 keyPtr++;
+                //for debugging
+                /*
+                int ASCII = c - '0';
+                Serial.print("key ASCII: ");
+                Serial.print(ASCII);
+                Serial.print('|'); */
+            }
+            if (strlen(key) == 0) {
+              //Serial.println("Key is null");
+              continue;
             }
             if (VERBOSE)
                 Serial.print(key);
-            for (char c=_configFile.read(); c != '\n' && c != EOF; c=_configFile.read()) {
-                *valPtr = c;
+            int count = 0;
+            char valC;
+            for (valC=_configFile.read(); valC != '\n' && valC != '\r' && (_configFile.position() < size); valC=_configFile.read()) {
+                *valPtr = valC;
                 valPtr++;
+                count++;
+                /*
+                int ASCII = valC - '0';
+                Serial.print(ASCII);
+                Serial.print('|'); */
             }
+            if (valC != '\n' && valC != '\r' && valC != ' '){
+              *valPtr = valC;
+              valPtr++;
+              count++;
+            }
+            valPtr = stripExtraSpaces(val);
             if (VERBOSE)
                 Serial.print(" "); Serial.println(val);
             addConfig(key, val);
