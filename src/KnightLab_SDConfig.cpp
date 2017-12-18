@@ -23,7 +23,6 @@
  */
 #include "KnightLab_SDConfig.h"
 #define CHIP_SELECT_PIN 10 // Feather 32u4 and M0
-#define RFM95_CS 8 // Must be pulled HIGH on M0 LoRa Feather
 #define VERBOSE true
 #define MAX_LEN 100
 static SdFat SD;
@@ -108,8 +107,6 @@ int _readSDConfig(char *configFileName) {
 }
 
 int readSDConfig(char *configFileName) {
-    digitalWrite(RFM95_CS, HIGH);
     int status = _readSDConfig(configFileName);
-    digitalWrite(RFM95_CS, LOW);
     return status;
 }
