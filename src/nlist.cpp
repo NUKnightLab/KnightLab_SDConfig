@@ -3,14 +3,14 @@
 /* From K&R 6.6 */
 
 static struct nlist *hashtab[HASHSIZE];
-unsigned int hash(char *s) {
+unsigned int hash(const char *s) {
     unsigned int hashval;
     for (hashval = 0; *s != '\0'; s++)
         hashval = *s + 31 * hashval;
     return hashval % HASHSIZE;
 }
 
-static struct nlist *lookup(char *s) {
+static struct nlist *lookup(const char *s) {
     struct nlist *np;
     for (np = hashtab[hash(s)]; np != NULL; np = np->next)
         if (strcmp(s, np->key) == 0)
@@ -18,7 +18,7 @@ static struct nlist *lookup(char *s) {
     return NULL;       /* not found */
 }
 
-char *getConfig(char *key) {
+char *getConfig(const char *key) {
     if (lookup(key) == NULL) {
         return '\0';
     } else {
@@ -26,9 +26,9 @@ char *getConfig(char *key) {
     }
 }
 
-char *getConfig(char *key, char *defaultValue) {
+char *getConfig(const char *key, const char *defaultValue) {
     if (lookup(key) == NULL) {
-        return defaultValue;
+        return (char*)defaultValue;
     } else {
         return lookup(key)->value;
     }

@@ -5,6 +5,6 @@
 #include <SdFat.h>
 #include "nlist.h"
 
-int readSDConfig(char *configFileName);
+int readSDConfig(const char *configFileName);
 char* stripExtraSpaces(char* val);
 #endif

@@ -9,8 +9,8 @@ struct nlist {
     char *value;
 };
 
-char *getConfig(char *s);
-char *getConfig(char *key, char *defaultValue);
+char *getConfig(const char *s);
+char *getConfig(const char *key, const char *defaultValue);
 struct nlist *addConfig(char *key, char *value);
 
 #endif
