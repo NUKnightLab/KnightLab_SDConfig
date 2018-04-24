@@ -52,7 +52,7 @@ int _readSDConfig(const char *configFileName) {
         char key[MAX_LEN], val[MAX_LEN];
         char* keyPtr;
         char* valPtr;
-        int size = _configFile.size();
+        unsigned int size = _configFile.size();
         Serial.print("Config file size: ");
         Serial.println(size);
         while (_configFile.available()) {
