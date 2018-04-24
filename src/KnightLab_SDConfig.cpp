@@ -11,8 +11,8 @@
  * be the config used.
  *
  * Usage:
- * readSDConfig(char *configFileName) // Read the config from file on SD card
- * getConfig(char *key)               // Get the value for key. Can return NULL
+ * readSDConfig(const char *configFileName) // Read the config from file on SD card
+ * getConfig(const char *key)               // Get the value for key. Can return NULL
  *
  * Adalogger notes:
  * SD card attached to SPI bus as follows:
@@ -38,7 +38,7 @@ char* stripExtraSpaces(char* val) {
   return val;
 }
 
-int _readSDConfig(char *configFileName) {
+int _readSDConfig(const char *configFileName) {
     Serial.print("Reading SD card ..");
     if (!SD.begin(CHIP_SELECT_PIN)) {
         Serial.println(" .. SD card init failed!");
@@ -106,7 +106,7 @@ int _readSDConfig(char *configFileName) {
     }
 }
 
-int readSDConfig(char *configFileName) {
+int readSDConfig(const char *configFileName) {
     int status = _readSDConfig(configFileName);
     return status;
 }
